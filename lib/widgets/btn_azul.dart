@@ -9,7 +9,7 @@ class BotonAzul extends StatelessWidget{
     }) : super(key: key);
 
   final String text;
-  final Function() onPressed;
+  final Function()? onPressed;
 
 @override 
   Widget build(BuildContext context) {
@@ -18,13 +18,11 @@ class BotonAzul extends StatelessWidget{
             highlightElevation: 5,
             color: Colors.blue,
             shape: const StadiumBorder(),
-            onPressed: () {
-              print('valores');
-            },
-            child: Container(
+            onPressed: () => onPressed!(),
+            child: const SizedBox(
              width: double.infinity,
              height: 55,
-             child: const Center(
+             child: Center(
               child: Text('Ingrese', style: TextStyle(color: Colors.white, fontSize: 17 ),),
              ),
             ),

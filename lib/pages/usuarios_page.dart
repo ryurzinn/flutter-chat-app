@@ -1,9 +1,13 @@
 import 'package:chat_app/models/usuario.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
 class UsuariosPage extends StatefulWidget {
+  const UsuariosPage({super.key});
+
   
 
   @override
@@ -12,7 +16,7 @@ class UsuariosPage extends StatefulWidget {
 
 class _UsuariosPageState extends State<UsuariosPage> {
 
-   RefreshController _refreshController = RefreshController(initialRefresh: false);
+   final RefreshController _refreshController = RefreshController(initialRefresh: false);
   
 
   final usuarios = [
@@ -24,16 +28,24 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mi nombre', style: TextStyle(color: Colors. black87),),
+        title: Text(usuario?.nombre?? 'Sin nombre', style: const TextStyle(color: Colors. black87),),
         centerTitle: true,
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon
           (Icons.exit_to_app,color:Colors. black87),
-          onPressed: () {},
+          onPressed: () {
+            // Desconectar del socket server
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthService.deleteToken();
+          },
           ),
           actions: [
             Container(
@@ -72,8 +84,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
       title: Text(usuario.nombre),
       subtitle: Text(usuario.email),
       leading: CircleAvatar(
-        child:  Text(usuario.nombre.substring(0,2)),
         backgroundColor: Colors.blue[100],
+        child:  Text(usuario.nombre.substring(0,2)),
       ),
       trailing: Container(
         width: 10,

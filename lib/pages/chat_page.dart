@@ -43,26 +43,24 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
         centerTitle: true,
         elevation: 1,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Flexible(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: _messages.length,
-                itemBuilder:  (_, i) => _messages[i],
-                reverse: true,
-                )
-              ),
-              const Divider(height: 1,),
-
-              // TODO: Caja de texto
-              Container(
-                color: Colors.white,
-                child: _inputChat(),
+      body: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: _messages.length,
+              itemBuilder:  (_, i) => _messages[i],
+              reverse: true,
               )
-          ],
-        ),
+            ),
+            const Divider(height: 1,),
+
+            // TODO: Caja de texto
+            Container(
+              color: Colors.white,
+              child: _inputChat(),
+            )
+        ],
       ),
    );
   }
@@ -80,7 +78,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               onSubmitted: _handleSumbit,
               onChanged: (String texto){
               setState(() {
-                if(texto.trim().length >0){
+                if(texto.trim().isNotEmpty){
                   _estaEscribiendo = true;
                 }else{
                   _estaEscribiendo = false;
@@ -133,9 +131,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   _handleSumbit(String texto){
 
-    if(texto.length == 0) return;
+    if(texto.isEmpty) return;
 
-    print(texto);
     _focusNode.requestFocus();
     _textController.clear();
 
